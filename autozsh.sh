@@ -1,6 +1,6 @@
 # Install zsh
-sudo apt install zsh
-sudo apt install powerline fonts-powerline
+sudo apt install -y zsh
+sudo apt install -y powerline fonts-powerline
 
 # Install oh-my-zsh
 git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
@@ -13,3 +13,4 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 
 # Change default shell
 sudo chsh -s /bin/zsh
+gnome-sesstion-quit
