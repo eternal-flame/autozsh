@@ -5,7 +5,6 @@ sudo apt install -y powerline fonts-powerline
 # Install oh-my-zsh
 git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 cp .zshrc $HOME/
-source .zshrc
 
 # Install plugin
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
