@@ -12,4 +12,4 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 
 # Change default shell
 chsh -s /usr/bin/zsh
-logout
+su - ${USER}
