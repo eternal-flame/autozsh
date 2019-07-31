@@ -12,4 +12,9 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 
 # Change default shell
 chsh -s /usr/bin/zsh
+
+# Copy tmux config
+cp .tmux.conf $HOME/
+
+# Relogin to take effect
 su - ${USER}
