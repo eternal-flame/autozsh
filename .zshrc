@@ -1,213 +1,170 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=$HOME/.local/bin:$PATH
-export PATH=/usr/local/go/bin:$HOME/go/bin:$PATH
-# Path to your oh-my-zsh installation.
+# ---------------------- #
+# PATH CONFIGURATION     #
+# ---------------------- #
+export PATH="$HOME/.local/bin:/usr/local/go/bin:$HOME/go/bin:$PATH"
+
+# ---------------------- #
+# OH-MY-ZSH SETUP        #
+# ---------------------- #
 export ZSH="$HOME/.oh-my-zsh"
-
-
-setopt autocd              # change directory just by typing its name
-#setopt correct            # auto correct mistakes
-setopt interactivecomments # allow comments in interactive mode
-setopt magicequalsubst     # enable filename expansion for arguments of the form ‘anything=expression’
-setopt nonomatch           # hide error message if there is no match for the pattern
-setopt notify              # report the status of background jobs immediately
-setopt numericglobsort     # sort filenames numerically when it makes sense
-setopt promptsubst         # enable command substitution in prompt
-
-WORDCHARS=${WORDCHARS//\/} # Don't consider certain characters part of the word
-
-# hide EOL sign ('%')
-PROMPT_EOL_MARK=""
-
-# configure key keybindings
-bindkey -e                                        # emacs key bindings
-bindkey ' ' magic-space                           # do history expansion on space
-bindkey '^[[3;5~' kill-word                       # ctrl + Supr
-bindkey '^[[3~' delete-char                       # delete
-bindkey '^[[1;5C' forward-word                    # ctrl + ->
-bindkey '^[[1;5D' backward-word                   # ctrl + <-
-bindkey '^[[5~' beginning-of-buffer-or-history    # page up
-bindkey '^[[6~' end-of-buffer-or-history          # page down
-bindkey '^[[H' beginning-of-line                  # home
-bindkey '^[[F' end-of-line                        # end
-bindkey '^[[Z' undo                               # shift + tab undo last action
-
-# enable completion features
-autoload -Uz compinit
-compinit -d ~/.cache/zcompdump
-zstyle ':completion:*:*:*:*:*' menu select
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' # case insensitive tab completion
-
-# History configurations
-HISTFILE=~/.zsh_history
-HISTSIZE=9999
-SAVEHIST=9999
-setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
-setopt hist_ignore_dups       # ignore duplicated commands history list
-setopt hist_ignore_space      # ignore commands that start with space
-setopt hist_verify            # show command with history expansion to user before running it
-#setopt share_history         # share command history data
-
-# force zsh to show the complete history
-alias history="history 0"
-
-# make less more friendly for non-text input files, see lesspipe(1)
-#[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
-
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
-esac
-
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-force_color_prompt=yes
-
-if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
-    else
-	color_prompt=
-    fi
-fi
 
 plugins=(
   git
-  zsh-autosuggestions
-  zsh-syntax-highlighting
   docker
   docker-compose
+  zsh-autosuggestions
+  zsh-syntax-highlighting
 )
 
-source $ZSH/oh-my-zsh.sh
+source "$ZSH/oh-my-zsh.sh"
 
-if [ "$color_prompt" = yes ]; then
-    PROMPT=$'%F{%(#.blue.green)}┌──${debian_chroot:+($debian_chroot)──}(%B%F{%(#.red.blue)}%n%(#..㉿)%m%b%F{%(#.blue.green)})-[%B%F{reset}%(6~.%-1~/…/%4~.%5~)%b%F{%(#.blue.green)}]\n└─%B%(#.%F{red}#.%F{blue}$)%b%F{reset} '
-    RPROMPT=$'%(?.. %? %F{red}%B⨯%b%F{reset})%(1j. %j %F{yellow}%B⚙%b%F{reset}.)'
+# ---------------------- #
+# ZSH OPTIONS            #
+# ---------------------- #
+setopt autocd               # Change dirs by name
+setopt interactivecomments  # Allow comments in interactive shell
+setopt magicequalsubst      # Expand arguments of the form name=value
+setopt nonomatch            # Suppress error if glob doesn't match
+setopt notify               # Job status notifications
+setopt numericglobsort      # Sort globs numerically
+setopt promptsubst          # Enable command substitution in prompt
 
-    # enable syntax-highlighting
-    if [ -f ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && [ "$color_prompt" = yes ]; then
-	. ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-	ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
-	ZSH_HIGHLIGHT_STYLES[default]=none
-	ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=red,bold
-	ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=cyan,bold
-	ZSH_HIGHLIGHT_STYLES[suffix-alias]=fg=green,underline
-	ZSH_HIGHLIGHT_STYLES[global-alias]=fg=magenta
-	ZSH_HIGHLIGHT_STYLES[precommand]=fg=green,underline
-	ZSH_HIGHLIGHT_STYLES[commandseparator]=fg=blue,bold
-	ZSH_HIGHLIGHT_STYLES[autodirectory]=fg=green,underline
-	ZSH_HIGHLIGHT_STYLES[path]=underline
-	ZSH_HIGHLIGHT_STYLES[path_pathseparator]=
-	ZSH_HIGHLIGHT_STYLES[path_prefix_pathseparator]=
-	ZSH_HIGHLIGHT_STYLES[globbing]=fg=blue,bold
-	ZSH_HIGHLIGHT_STYLES[history-expansion]=fg=blue,bold
-	ZSH_HIGHLIGHT_STYLES[command-substitution]=none
-	ZSH_HIGHLIGHT_STYLES[command-substitution-delimiter]=fg=magenta
-	ZSH_HIGHLIGHT_STYLES[process-substitution]=none
-	ZSH_HIGHLIGHT_STYLES[process-substitution-delimiter]=fg=magenta
-	ZSH_HIGHLIGHT_STYLES[single-hyphen-option]=fg=magenta
-	ZSH_HIGHLIGHT_STYLES[double-hyphen-option]=fg=magenta
-	ZSH_HIGHLIGHT_STYLES[back-quoted-argument]=none
-	ZSH_HIGHLIGHT_STYLES[back-quoted-argument-delimiter]=fg=blue,bold
-	ZSH_HIGHLIGHT_STYLES[single-quoted-argument]=fg=yellow
-	ZSH_HIGHLIGHT_STYLES[double-quoted-argument]=fg=yellow
-	ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]=fg=yellow
-	ZSH_HIGHLIGHT_STYLES[rc-quote]=fg=magenta
-	ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=magenta
-	ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=magenta
-	ZSH_HIGHLIGHT_STYLES[back-dollar-quoted-argument]=fg=magenta
-	ZSH_HIGHLIGHT_STYLES[assign]=none
-	ZSH_HIGHLIGHT_STYLES[redirection]=fg=blue,bold
-	ZSH_HIGHLIGHT_STYLES[comment]=fg=black,bold
-	ZSH_HIGHLIGHT_STYLES[named-fd]=none
-	ZSH_HIGHLIGHT_STYLES[numeric-fd]=none
-	ZSH_HIGHLIGHT_STYLES[arg0]=fg=green
-	ZSH_HIGHLIGHT_STYLES[bracket-error]=fg=red,bold
-	ZSH_HIGHLIGHT_STYLES[bracket-level-1]=fg=blue,bold
-	ZSH_HIGHLIGHT_STYLES[bracket-level-2]=fg=green,bold
-	ZSH_HIGHLIGHT_STYLES[bracket-level-3]=fg=magenta,bold
-	ZSH_HIGHLIGHT_STYLES[bracket-level-4]=fg=yellow,bold
-	ZSH_HIGHLIGHT_STYLES[bracket-level-5]=fg=cyan,bold
-	ZSH_HIGHLIGHT_STYLES[cursor-matchingbracket]=standout
-    fi
-else
-    PROMPT='${debian_chroot:+($debian_chroot)}%n@%m:%~%# '
+WORDCHARS=${WORDCHARS//\/}  # Remove / from word characters
+PROMPT_EOL_MARK=""          # Hide EOL character in prompt
+
+# ---------------------- #
+# COMPLETION             #
+# ---------------------- #
+autoload -Uz compinit
+compinit -d "${ZSH_CACHE_DIR:-$HOME/.cache}/zcompdump"
+
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+
+# ---------------------- #
+# HISTORY SETTINGS       #
+# ---------------------- #
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+
+setopt hist_ignore_dups
+setopt hist_expire_dups_first
+setopt hist_ignore_space
+setopt hist_verify
+
+alias history="history 0"
+
+# ---------------------- #
+# KEYBINDINGS            #
+# ---------------------- #
+bindkey -e
+bindkey ' ' magic-space
+bindkey '^[[3;5~' kill-word
+bindkey '^[[3~' delete-char
+bindkey '^[[1;5C' forward-word
+bindkey '^[[1;5D' backward-word
+bindkey '^[[5~' beginning-of-buffer-or-history
+bindkey '^[[6~' end-of-buffer-or-history
+bindkey '^[[H' beginning-of-line
+bindkey '^[[F' end-of-line
+bindkey '^[[Z' undo
+bindkey -r '^[[Z'
+bindkey '^[[Z' forward-char
+
+# ---------------------- #
+# PROMPT SETUP           #
+# ---------------------- #
+if [[ -z "${debian_chroot:-}" && -r /etc/debian_chroot ]]; then
+  debian_chroot=$(< /etc/debian_chroot)
 fi
-unset color_prompt force_color_prompt
 
-# If this is an xterm set the title to user@host:dir
 case "$TERM" in
-xterm*|rxvt*)
+  xterm-color|*-256color) color_prompt=yes;;
+esac
+
+if [[ -n "$color_prompt" ]]; then
+  PROMPT='%F{blue}╭─%f${debian_chroot:+(%F{magenta}${debian_chroot}%f) }%F{cyan}%n@%m %F{green}%~%f %F{blue}──⟫%f\n%F{blue}╰─%f%B%F{%(#.red.blue)}%#%f%b '
+  RPROMPT='%F{red}${(?.⛔)}%f%F{yellow}${(1j.⚙.)}%f'
+else
+  PROMPT='╭─${debian_chroot:+($debian_chroot) }%n@%m %~ ──⟫\n╰─%# '
+fi
+
+# ---------------------- #
+# ZSH SYNTAX HIGHLIGHT   #
+# ---------------------- #
+SYNTAX_HIGHLIGHT="$ZSH/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+if [[ -f $SYNTAX_HIGHLIGHT ]]; then
+  source "$SYNTAX_HIGHLIGHT"
+  ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+  ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=red,bold'
+  ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=cyan,bold'
+  ZSH_HIGHLIGHT_STYLES[suffix-alias]='fg=green,underline'
+  ZSH_HIGHLIGHT_STYLES[precommand]='fg=green,underline'
+  ZSH_HIGHLIGHT_STYLES[path]='underline'
+  ZSH_HIGHLIGHT_STYLES[comment]='fg=black,bold'
+  ZSH_HIGHLIGHT_STYLES[arg0]='fg=green'
+fi
+
+# ---------------------- #
+# AUTOSUGGESTIONS        #
+# ---------------------- #
+AUTOSUGGEST="$ZSH/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+if [[ -f $AUTOSUGGEST ]]; then
+  source "$AUTOSUGGEST"
+  ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#999'
+fi
+
+# ---------------------- #
+# SHELL ENV SETTINGS     #
+# ---------------------- #
+case "$TERM" in
+  xterm*|rxvt*)
     TERM_TITLE=$'\e]0;${debian_chroot:+($debian_chroot)}%n@%m: %~\a'
-    ;;
-*)
     ;;
 esac
 
 new_line_before_prompt=yes
 precmd() {
-    # Print the previously configured title
-    print -Pnr -- "$TERM_TITLE"
-
-    # Print a new line before the prompt, but only if it is not the first line
-    if [ "$new_line_before_prompt" = yes ]; then
-	if [ -z "$_NEW_LINE_BEFORE_PROMPT" ]; then
-	    _NEW_LINE_BEFORE_PROMPT=1
-	else
-	    print ""
-	fi
+  [[ -n $TERM_TITLE ]] && print -Pnr -- "$TERM_TITLE"
+  if [[ "$new_line_before_prompt" == yes ]]; then
+    if [[ -z "$_NEW_LINE_BEFORE_PROMPT" ]]; then
+      _NEW_LINE_BEFORE_PROMPT=1
+    else
+      print ""
     fi
+  fi
 }
 
-# enable color support of ls, less and man, and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-    alias diff='diff --color=auto'
-    alias ip='ip --color=auto'
-
-    export LESS_TERMCAP_mb=$'\E[1;31m'     # begin blink
-    export LESS_TERMCAP_md=$'\E[1;36m'     # begin bold
-    export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
-    export LESS_TERMCAP_so=$'\E[01;33m'    # begin reverse video
-    export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
-    export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
-    export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
-
-    # Take advantage of $LS_COLORS for completion as well
-    zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+# ---------------------- #
+# COLOR + ALIASES        #
+# ---------------------- #
+if command -v dircolors >/dev/null; then
+  eval "$(dircolors -b ~/.dircolors 2>/dev/null || dircolors -b)"
+  alias ls='ls --color=auto'
+  alias grep='grep --color=auto'
+  alias fgrep='fgrep --color=auto'
+  alias egrep='egrep --color=auto'
+  alias diff='diff --color=auto'
+  alias ip='ip --color=auto'
+  zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 fi
 
-# some more ls aliases
+# File management aliases
 alias ll='ls -l'
 alias la='ls -A'
 alias l='ls -CF'
 
-# enable auto-suggestions based on the history
-if [ -f ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
-    . ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-    # change suggestion color
-    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#999'
-fi
+# Pager color enhancement
+export LESS_TERMCAP_mb=$'\E[1;31m'
+export LESS_TERMCAP_md=$'\E[1;36m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;33m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[1;32m'
+export LESS_TERMCAP_ue=$'\E[0m'
 
-# Bind key to use Shitf+Tab for autocompletion
-bindkey -r '^[[Z'
-bindkey '^[[Z' forward-char
-
+# ---------------------- #
+# CLEANUP                #
+# ---------------------- #
+unset color_prompt force_color_prompt
