@@ -84,8 +84,8 @@ case "$TERM" in
 esac
 
 if [[ -n "$color_prompt" ]]; then
-  PROMPT='%F{blue}╭─%f${debian_chroot:+(%F{magenta}${debian_chroot}%f) }%F{cyan}%n@%m %F{green}%~%f %F{blue}──⟫%f\n%F{blue}╰─%f%B%F{%(#.red.blue)}%#%f%b '
-  RPROMPT='%F{red}${(?.⛔)}%f%F{yellow}${(1j.⚙.)}%f'
+  PROMPT=$'%F{blue}╭── %f${debian_chroot:+(%F{magenta}${debian_chroot}%f%F{cyan}%n@%m %F{green}%~%f %F{blue}──⟫%f\n%F{blue}╰─%f%B%F{%(#.red.blue)}%#%f%b '
+  RPROMPT=$'%(?..%F{red}⛔ %?)%(1j.%F{yellow}⚙ %j)%f'
 else
   PROMPT='╭─${debian_chroot:+($debian_chroot) }%n@%m %~ ──⟫\n╰─%# '
 fi
